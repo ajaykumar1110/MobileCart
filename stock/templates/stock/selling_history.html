@@ -1,0 +1,59 @@
+{% extends "stock/base.html" %}
+{% load static %}
+{% block content %}
+<div class="container">
+    <br>
+        <div class="row justify-content-Left mt-5">
+            <div class="col-md-10">
+                {% if querysetsold %}
+                     <h1>Customer Details</h1>
+                {% else %}
+                    <h1>No business yet</h1>
+                {% endif %}
+            </div>
+        </div>
+        <div class="text-left">
+            <div>
+                {% if querysetsold %}
+                     Stock of {{ querysetsold.count }} product{{ querysetsold.count|pluralize }}
+                {% else %}
+                    <h1>No business yet</h1>
+                {% endif %}
+            </div>
+        </div>
+        <div class="display_table">
+            {% if querysetsold %}
+                <table class="table">  
+                    <thead>
+                        <tr>
+                            <th>count</th>
+                            <th>Customer Name</th>
+                            <th>Address</th>
+                            <th>Product Name</th>
+                            <th>Model Name</th>
+                            <th>Quantity</th>
+                            <th>Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for Stocker in querysetsold %}
+                        <tr>
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ Stocker.customer_name }}</td>
+                                <td>{{ Stocker.address }}</td>
+                                <td>{{ Stocker.customer_product }}</td>
+                                <td>{{ Stocker.customer_model }}</td>
+                                <td>{{ Stocker.issue_quantity }}</td>
+                                <td><a href="{% url 'deletecustomer' Stocker.id %}"><img src="{% static 'img/paint1.png' %}"></a></td>
+                         </tr>
+                         {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <div class="text-center">
+                    <h2>Looks like you don't have any customers yet!</h2>
+                </div>
+            {% endif %}
+        </div>
+</div>
+{% endblock %}

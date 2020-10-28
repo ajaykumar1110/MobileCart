@@ -1,0 +1,30 @@
+{% extends "stock/base.html" %}
+
+{% block content %}
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+            {% if stocks %}
+                 <h1>{{ stocks.count }} Current stock{{ stocks.count|pluralize }}</h1>
+            {% else %}
+                           <h1>Current stocks</h1>
+            {% endif %}
+        </div>
+    </div>
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-10">
+        {% if stocks %}
+            <div class="list-group">
+                {% for stock in stocks %}
+                    <a href="{% url 'viewstock' stock.id %}" class="list-group-item list-group-item-action{% if stock.important %} list-group-item-danger{% endif %}"><b>{{ stock.product }}</b>{% if stock.model %} - {{ stock.model|truncatechars:30 }}{% endif %}</a>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="text-center">
+                <h2>Looks like you don't have any todos! Nice work.</h2>
+            <br>
+            <a role="button" class="btn btn-primary" href="{% url 'addstocks' %}">New Todo</a>
+            </div>
+        {% endif %}
+        </div>
+    </div>
+{% endblock %}

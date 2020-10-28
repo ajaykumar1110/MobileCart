@@ -1,0 +1,101 @@
+{% extends "stock/base.html" %}
+{% load static %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="row"><!--Start of row-->
+  <div class="col-sm-2"><!--Start of first col-->
+    <br>
+<br>
+<br>
+<br>
+<br>
+      <form method='POST' action=''>{% csrf_token %}
+        {{form|crispy}}
+        <input class="btn btn-primary mybutton" type="submit" value='Search'/>
+      </form><br>
+      <br>
+      <!-- <a href="/add_items"><div class="btn btn-primary mybutton">Add Items</div></a><br><br> -->
+      <!-- <a href="/list_history"><div class="btn btn-primary mybutton">List History</div></a><br> -->
+
+  </div><!--End of first col-->
+
+
+<div class="col-sm-10"><!--Start of second col-->
+    <div class="container">
+        <div class="row justify-content-Left mt-5">
+            <div class="col-md-10">
+                {% if contexts %}
+                     <h1>Stock of {{ contexts.count }} product{{ contexts.count|pluralize }}</h1>
+                {% else %}
+                               <h1>Current Stocks</h1>
+                {% endif %}
+            </div>
+        </div>
+        <!-- <div class="row justify-content-center mt-5"> -->
+        {% if contexts %}
+            <div class="container">
+                <!-- <form method='POST' action=''>
+                    {% csrf_token %}
+                    {{form|crispy}}
+                    <input type="submit" value='Search'/>
+                </form> -->
+                <br>
+                <div class="display_table">
+                    <table class="table">  
+                        <thead>
+                            <tr>
+                                <th>count</th>
+                                <th>Product Name</th>
+                                <th>Model Name</th>
+                                <th>Quantity</th>
+                                <th>Reorder Level</th>
+                                <th>Date</th>
+                                <th>Sell</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for Stocker in contexts   %}
+                            <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                    <td>
+                                        {% if Stocker.important %}
+                                            <div style="background-color: yellow;"><a href="{% url 'viewstock' Stocker.id %}">{{ Stocker.product }}</div>
+                                        {% else %}
+                                            <a href="{% url 'viewstock' Stocker.id %}">{{Stocker.product}}
+                                        {% endif %}
+                                    </td>
+                                    <!-- <td><a href="{% url 'viewstock' Stocker.id %}" class="list-group-item list-group-item-action{% if Stocker.important %} list-group-item-danger{% endif %}">{{ Stocker.product }} </a></td> -->
+                                    <td>{{ Stocker.model }}</td>
+                                    <td>
+                                      {% if Stocker.quantity <= Stocker.reorder_level %}
+                                           <div style="background-color: orange;">{{Stocker.quantity}}</div>
+                                      {% else %}
+                                            {{Stocker.quantity}}
+                                      {% endif %}
+                                    </td>
+                                    <td><a href="{% url 'reorder_level' Stocker.id %}">{{Stocker.reorder_level}}</a></td>
+                                    <td>{{ Stocker.date|date:'M d Y'|upper }}</td>
+                                    <td><a href="{% url 'stock_detail' Stocker.id %}">Sell</a></td>
+                                    <td><a href="{% url 'deletestock' Stocker.id %}"><img src="{% static 'img/paint1.png' %}"></a></td>                       
+                             </tr>
+                             {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+        {% else %}
+                <div class="text-center">
+                    <h2>Looks like you don't have any Stocks!</h2>
+                <br>
+                <a role="button" class="btn btn-primary" href="{% url 'addstocks' %}">Add New Stock</a>
+                </div>
+        {% endif %}
+        
+            </div>
+
+    </div>
+</div><!--End of second col-->
+
+</div><!--End of row-->
+{% endblock %}

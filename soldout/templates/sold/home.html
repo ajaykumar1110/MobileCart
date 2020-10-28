@@ -1,0 +1,45 @@
+<div class="row justify-content-center mt-5">
+        <div class="col-md-7 text-center">
+
+            <h1>Sale the product!</h1>
+
+            <form method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+	                <select>
+						{% for Stocker in Stock %}
+							<option value="{{ Stocker.product }}">{{ Stocker.product }} -- {{ Stocker.model }}</option>
+						{% endfor %}
+					</select>Product
+				</div>
+				<div class="form-group">
+                    <label for="customer_name">customer_name</label>
+                    <input type="text" name="customer_name" class="form-control" id="customer_name" required>
+                </div>
+                <div class="form-group">
+                    <label for="product">product</label>
+                    <input type="text" name="product" class="form-control" id="product" required>
+                </div>
+                <div class="form-group">
+                    <label for="model">model</label>
+                    <input type="text" name="model" class="form-control" id="model" required>
+                </div>
+                <div class="form-group">
+                    <label for="quantity">Quantity</label>
+                    <input type="number" id="quantity" name="quantity" min="1" max="100">
+                    <!-- <input type="time" name="received" class="form-control" id="received" > -->
+                </div>
+                <div class="form-group">
+                    <label for="received">Received On</label>
+                    <input type="time" name="received" class="form-control" id="received" >
+                </div>
+                <div class="form-group">
+                    <label for="dateReceived">Date On</label>
+                    <input type="date" name="dateReceived" class="form-control" id="dateReceived" >
+                </div>
+                <button type="submit" class="btn btn-primary">Save</button>
+            </form>
+
+        </div>
+</div>
+
